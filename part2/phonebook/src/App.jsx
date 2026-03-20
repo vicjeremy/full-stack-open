@@ -31,10 +31,16 @@ const App = () => {
       alert(`${newName.name} is already in the phonebook`)
       return
     }
-    setPersons(persons.concat(personObject))
-    
-    setNewName('')
-    setNewNumber('')
+
+    axios
+    .post('http://localhost:3001/persons', personObject)
+    .then(response => {
+      console.log(response)
+      setPersons(persons.concat(personObject))
+      
+      setNewName('')
+      setNewNumber('')
+    })
   }
 
   const handleNameChange = (event) => {
