@@ -33,30 +33,30 @@ const App = () => {
         const changedPerson = { ...person, number: newNumber}
 
         personService.update(person.id, changedPerson).then((returnedPerson) => {
-        setPersons(persons.map((persons) => (persons.id !== person.id ? persons : returnedPerson)))
-        setMessage({
-          message: `Changed number ${newName} to ${newNumber}`,
-          type: 'success'
-          })
+          setPersons(persons.map((persons) => (persons.id !== person.id ? persons : returnedPerson)))
+          setMessage({
+            message: `Changed number ${newName} to ${newNumber}`,
+            type: 'success'
+            })
         }).catch((error) => {
           setMessage({
-          message: `'${newName}' was already deleted from server`,
+          message: `Information of ${newName} has already deleted from server`,
           type: 'error'
           })
-          setPersons(persons.filter((n) => n.name === newName))
+          setPersons(persons.filter((n) => n.name !== newName))
         })
       }else{
         return
       }
     }else{
       personService.create(personObject).then(returnedPerson => {
-      setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewNumber('')
-      setMessage({
-          message: `Added ${newName}`,
-          type: 'success'
-          })
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+        setMessage({
+            message: `Added ${newName}`,
+            type: 'success'
+            })
       }).catch((error) => {
         setMessage({
           message: error.message,
