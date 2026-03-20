@@ -3,12 +3,14 @@ import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+  const [message, setMessage] = useState([])
 
   useEffect(() => {
     console.log('effect')
@@ -32,18 +34,37 @@ const App = () => {
 
         personService.update(person.id, changedPerson).then((returnedPerson) => {
         setPersons(persons.map((persons) => (persons.id !== person.id ? persons : returnedPerson)))
-      })
+        setMessage({
+          message: `Changed number ${newName} to ${newNumber}`,
+          type: 'success'
+          })
+        }).catch((error) => {
+          setMessage({
+          message: `'${newName}' was already deleted from server`,
+          type: 'error'
+          })
+          setPersons(persons.filter((n) => n.name === newName))
+        })
       }else{
         return
       }
     }else{
       personService.create(personObject).then(returnedPerson => {
-      console.log(returnedPerson)
       setPersons(persons.concat(returnedPerson))
-      
       setNewName('')
       setNewNumber('')
-      })
+      setMessage({
+          message: `Added ${newName}`,
+          type: 'success'
+          })
+      }).catch((error) => {
+        setMessage({
+          message: error.message,
+          type: 'error'
+        })
+        setNewName("");
+        setNewNumber("");
+      });
     }
   }
 
@@ -79,6 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notif={message}/>
       <Filter value={filterName} onChange={handleFilterChange} />
 
       <h3>Add a new</h3>
