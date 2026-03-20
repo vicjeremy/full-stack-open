@@ -26,17 +26,25 @@ const App = () => {
     }
     
     if(persons.some(person => person.name === newName)){
-      alert(`${newName.name} is already in the phonebook`)
-      return
-    }
+      if (confirm(`${newName} is already added in the phonebook, replace the old number with a new one?`) == true){
+        const person = persons.find((n) => n.name === newName)
+        const changedPerson = { ...person, number: newNumber}
 
-   personService.create(personObject).then(returnedPerson => {
+        personService.update(person.id, changedPerson).then((returnedPerson) => {
+        setPersons(persons.map((persons) => (persons.id !== person.id ? persons : returnedPerson)))
+      })
+      }else{
+        return
+      }
+    }else{
+      personService.create(personObject).then(returnedPerson => {
       console.log(returnedPerson)
       setPersons(persons.concat(returnedPerson))
       
       setNewName('')
       setNewNumber('')
-    })
+      })
+    }
   }
 
   const handleNameChange = (event) => {
