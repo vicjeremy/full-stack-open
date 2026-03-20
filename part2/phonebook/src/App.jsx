@@ -48,6 +48,21 @@ const App = () => {
   const handleFilterChange = (event) => {
     setFilterName(event.target.value)
 }
+  const deletePerson = (event) => {
+    console.log(event.target.value);
+    const id = event.target.value
+    const person = persons.find((n) => n.id === id)
+    if (confirm(`delete ${person.name}`) == true) {
+      personService.erase(id).then(() => {
+      setPersons(persons.filter((n) => n.id !== id))
+    }).catch((error) => {
+        alert(`the note '${person.content}' was already deleted from server`)
+        setPersons(persons.filter((n) => n.id !== id))
+      })
+    } else {
+      return
+    }
+  }
 
   const filterToShow = filterName != ''
     ? persons.filter(person => person.name.toLowerCase().includes(filterName))
@@ -62,7 +77,7 @@ const App = () => {
       <PersonForm onSubmit={addName} valueName={newName} onChangeName={handleNameChange} valueNumber={newNumber} onChangeNumber={handleNumberChange} />
 
       <h3>Numbers</h3>
-      <Persons filter={filterToShow} />
+      <Persons filter={filterToShow} erase={deletePerson}/>
     </div>
   )
 }
