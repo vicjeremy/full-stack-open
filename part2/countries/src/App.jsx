@@ -52,7 +52,7 @@ const App = () => {
           : filtered.length === 1 
           ? <DataCountry filter={filtered}/>
           :filtered.map(country => (
-              <p key={country.name.common}>{country.name.common}</p>
+              <p key={country.name.common}>{country.name.common} <button onClick={() => setValue(country.name.common)} >Show</button></p>
             ))
         }
       </div>
