@@ -24,8 +24,11 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
-app.use(morgan("tiny"));
 app.use(express.json());
+morgan.token("body", (request) =>  JSON.stringify(request.body))
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :body"),
+);
 
 app.get("/info", (request, response) => {
   const totalPerson = persons.length;
