@@ -30,12 +30,22 @@ app.get("/info", (request, response) => {
   const totalPerson = persons.length;
   const timeNow = new Date();
   response.send(
-    `<p>Phonebook has info for ${totalPerson} people</p><p>${timeNow}</p>`,
+    `<p>Phonebook has info for ${totalPerson} people</p> <p>${timeNow}</p>`,
   );
 });
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
+});
+
+app.get("/api/persons/:id", (request, response) => {
+  const id = request.params.id;
+  const person = persons.find((person) => person.id === id);
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
 });
 
 const PORT = 3001;
