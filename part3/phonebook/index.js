@@ -92,7 +92,7 @@ app.post("/api/persons", (request, response) => {
 });
 
 // Catch-all: serve index.html for any non-API route (React client-side routing)
-app.get("*", (request, response) => {
+app.get("/{*splat}", (request, response) => {
   response.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
