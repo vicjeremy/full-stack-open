@@ -38,7 +38,7 @@ const App = () => {
             message: `Changed number ${newName} to ${newNumber}`,
             type: 'success'
             })
-        }).catch((error) => {
+        }).catch(() => {
           setMessage({
           message: `Information of ${newName} has already deleted from server`,
           type: 'error'
@@ -84,7 +84,7 @@ const App = () => {
     if (confirm(`delete ${person.name}`) == true) {
       personService.erase(id).then(() => {
       setPersons(persons.filter((n) => n.id !== id))
-    }).catch((error) => {
+    }).catch(() => {
         alert(`the note '${person.content}' was already deleted from server`)
         setPersons(persons.filter((n) => n.id !== id))
       })
