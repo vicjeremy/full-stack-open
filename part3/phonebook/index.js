@@ -30,7 +30,7 @@ morgan.token("body", (request) =>  JSON.stringify(request.body))
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body"),
 );
-app.use(express.static("dist"));
+app.use(express.static("public"));
 
 app.get("/info", (request, response) => {
   const totalPerson = persons.length;
@@ -94,3 +94,4 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+module.exports = app;
