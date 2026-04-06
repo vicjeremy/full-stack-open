@@ -4,14 +4,16 @@
     {
       "src": "index.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
     }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/index.js" },
-    { "source": "/([^.]*)", "destination": "/public/index.html" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/index.js" },
+    { "src": "/info", "dest": "/index.js" },
+    {
+      "src": "/public/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000, immutable" },
+      "dest": "/public/$1"
+    },
+    { "src": "/(.*)", "dest": "/index.js" }
   ]
 }
