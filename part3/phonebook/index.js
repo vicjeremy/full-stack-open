@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-const path = require("path");
 
 let persons = [
   {
@@ -31,7 +30,6 @@ morgan.token("body", (request) =>  JSON.stringify(request.body))
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body"),
 );
-app.use(express.static(path.join(__dirname, "../public")));
 
 app.get("/info", (request, response) => {
   const totalPerson = persons.length;
