@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const path = require("path");
 const app = express();
 
 let persons = [
@@ -25,7 +26,7 @@ let persons = [
   },
 ];
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 morgan.token("body", (request) => JSON.stringify(request.body));
 app.use(
@@ -90,8 +91,13 @@ app.post("/api/persons", (request, response) => {
   response.json(person);
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Catch-all: serve index.html for any non-API route (React client-side routing)
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+// const PORT = process.env.PORT || 3001;
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 module.exports = app;
